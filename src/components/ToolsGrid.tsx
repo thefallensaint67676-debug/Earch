@@ -1,11 +1,15 @@
+import { useState } from 'react';
 import ToolCard from './ToolCard';
+import ToolModal from './ToolModal';
 import { tools } from '../data/tools';
+import { Tool } from '../types';
 
 interface ToolsGridProps {
   category: 'all' | 'ai' | 'pdf' | 'email';
 }
 
 export default function ToolsGrid({ category }: ToolsGridProps) {
+  const [selectedTool, setSelectedTool] = useState<Tool | null>(null);
   const filteredTools = category === 'all'
     ? tools
     : tools.filter(tool => tool.category === category);
@@ -27,9 +31,13 @@ export default function ToolsGrid({ category }: ToolsGridProps) {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredTools.map((tool) => (
-          <ToolCard key={tool.id} tool={tool} />
+          <ToolCard key={tool.id} tool={tool} onClick={() => setSelectedTool(tool)} />
         ))}
       </div>
+
+      {selectedTool && (
+        <ToolModal tool={selectedTool} onClose={() => setSelectedTool(null)} />
+      )}
     </div>
   );
 }

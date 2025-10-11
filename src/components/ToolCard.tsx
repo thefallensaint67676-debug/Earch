@@ -1,18 +1,11 @@
-import { LucideIcon } from 'lucide-react';
-
-interface Tool {
-  id: string;
-  name: string;
-  description: string;
-  icon: LucideIcon;
-  category: 'ai' | 'pdf' | 'email';
-}
+import { Tool } from '../types';
 
 interface ToolCardProps {
   tool: Tool;
+  onClick: () => void;
 }
 
-export default function ToolCard({ tool }: ToolCardProps) {
+export default function ToolCard({ tool, onClick }: ToolCardProps) {
   const Icon = tool.icon;
 
   const categoryColors = {
@@ -29,6 +22,7 @@ export default function ToolCard({ tool }: ToolCardProps) {
 
   return (
     <div
+      onClick={onClick}
       className={`group relative bg-gradient-to-br ${categoryColors[tool.category]} border rounded-xl p-6 transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer backdrop-blur-sm`}
     >
       <div className="flex items-start space-x-4">
