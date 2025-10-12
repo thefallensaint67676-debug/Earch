@@ -1,7 +1,8 @@
-import { X, Loader2 } from 'lucide-react';
+import { X, Loader2, Upload, FileText, X as XIcon } from 'lucide-react';
 import { useState } from 'react';
 import { Tool } from '../types';
 import { processToolRequest } from '../services/gemini';
+import { extractTextFromFile, formatFileSize, isImageFile } from '../utils/fileProcessing';
 
 interface ToolModalProps {
   tool: Tool;
@@ -13,19 +14,46 @@ export default function ToolModal({ tool, onClose }: ToolModalProps) {
   const [output, setOutput] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+  const [fileContent, setFileContent] = useState('');
 
   const Icon = tool.icon;
 
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    const filesArray = Array.from(files);
+    setUploadedFiles(prev => [...prev, ...filesArray]);
+
+    try {
+      for (const file of filesArray) {
+        const text = await extractTextFromFile(file);
+        setFileContent(prev => prev + (prev ? '\n\n' : '') + `[File: ${file.name}]\n${text}`);
+      }
+    } catch (err) {
+      setError('Failed to process file');
+    }
+  };
+
+  const removeFile = (index: number) => {
+    setUploadedFiles(prev => prev.filter((_, i) => i !== index));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim()) return;
+    const combinedInput = fileContent
+      ? `${fileContent}\n\n${input}`
+      : input;
+
+    if (!combinedInput.trim()) return;
 
     setLoading(true);
     setError('');
     setOutput('');
 
     try {
-      const result = await processToolRequest(tool, input);
+      const result = await processToolRequest(tool, combinedInput);
       setOutput(result);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred processing your request');
@@ -84,7 +112,57 @@ export default function ToolModal({ tool, onClose }: ToolModalProps) {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
-                Input
+                Upload Files (Optional)
+              </label>
+              <div className="border-2 border-dashed border-gray-700 rounded-lg p-6 text-center hover:border-yellow-500/50 transition-colors duration-300 cursor-pointer">
+                <input
+                  type="file"
+                  onChange={handleFileUpload}
+                  multiple
+                  accept=".pdf,.txt,.doc,.docx,.jpg,.jpeg,.png,.gif,.csv"
+                  className="hidden"
+                  id="file-upload"
+                  disabled={loading}
+                />
+                <label htmlFor="file-upload" className="cursor-pointer">
+                  <Upload className="w-10 h-10 text-gray-500 mx-auto mb-3" />
+                  <p className="text-gray-300 font-medium mb-1">Click to upload files</p>
+                  <p className="text-sm text-gray-500">
+                    PDF, TXT, DOCX, Images, CSV (Multiple files supported)
+                  </p>
+                </label>
+              </div>
+
+              {uploadedFiles.length > 0 && (
+                <div className="mt-4 space-y-2">
+                  {uploadedFiles.map((file, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between bg-gray-800 border border-gray-700 rounded-lg p-3"
+                    >
+                      <div className="flex items-center space-x-3">
+                        <FileText className="w-5 h-5 text-yellow-500" />
+                        <div>
+                          <p className="text-sm text-gray-200 font-medium">{file.name}</p>
+                          <p className="text-xs text-gray-500">{formatFileSize(file.size)}</p>
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => removeFile(index)}
+                        className="p-1 hover:bg-gray-700 rounded transition-colors"
+                      >
+                        <XIcon className="w-4 h-4 text-gray-400" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Text Input {uploadedFiles.length > 0 && '(Optional - adds to file content)'}
               </label>
               <textarea
                 value={input}
@@ -97,7 +175,7 @@ export default function ToolModal({ tool, onClose }: ToolModalProps) {
 
             <button
               type="submit"
-              disabled={loading || !input.trim()}
+              disabled={loading || (!input.trim() && uploadedFiles.length === 0)}
               className="w-full py-3 px-6 bg-gradient-to-r from-yellow-500 to-yellow-600 text-black font-semibold rounded-lg hover:from-yellow-600 hover:to-yellow-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center space-x-2"
             >
               {loading ? (
