@@ -105,34 +105,6 @@ A comprehensive web application providing powerful AI tools, PDF utilities, and 
 - **Usage Monitoring**: Track and limit user API consumption
 - **Scalable Backend**: Supports multiple subscription tiers
 
-### User Subscription Tiers
-- **Free Tier**: Limited monthly usage, basic features
-- **Basic Tier**: Increased limits, standard features
-- **Pro Tier**: High limits, premium AI features
-- **Enterprise Tier**: Unlimited usage, all features, priority support
-
-### Feature Access Control
-- **AI Tools**: Controlled by subscription tier
-- **PDF Tools**: Available based on user permissions
-- **Email Tools**: Usage limits based on plan
-- **Premium Features**: Image generation, advanced AI models
-- **Bulk Operations**: Enterprise tier exclusive
-
-## 🔐 Security & Privacy
-
-- **Secure Authentication**: JWT-based user sessions
-- **API Rate Limiting**: Prevents abuse and ensures fair usage
-- **Data Privacy**: User data handled according to privacy policy
-- **Secure Processing**: All API calls authenticated and encrypted
-- **Usage Monitoring**: Transparent usage tracking for users
-
-## 📊 Admin Features
-
-- **User Management**: View and manage user accounts
-- **Feature Control**: Enable/disable features per user or tier
-- **Usage Analytics**: Monitor system usage and performance
-- **Subscription Management**: Handle billing and plan changes
-- **System Health**: Monitor API performance and uptime
 
 ## 🎨 Design Features
 
