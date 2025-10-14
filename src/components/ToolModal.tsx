@@ -1,8 +1,8 @@
 import { X, Loader2, Upload, FileText, X as XIcon } from 'lucide-react';
 import { useState } from 'react';
 import { Tool } from '../types';
-import { processToolRequest } from '../services/gemini';
-import { extractTextFromFile, formatFileSize, isImageFile } from '../utils/fileProcessing';
+import { processToolRequest } from '../services/aiService';
+import { extractTextFromFile, formatFileSize } from '../utils/fileProcessing';
 
 interface ToolModalProps {
   tool: Tool;

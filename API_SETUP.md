@@ -1,193 +1,232 @@
 # API Setup Guide for EternalArchive
 
-This guide will help you configure the Google Gemini API key to enable all tools in the application.
+This guide will help you configure an AI API key to enable all tools in the application. You can use **any** of the following AI providers.
 
-## Prerequisites
+## Choose Your AI Provider
 
-- A Google account
-- Access to Google AI Studio
+The application supports three AI providers. You only need **ONE** API key to use all features!
 
-## Step-by-Step Setup
+| Provider | Cost | Pros | Get API Key |
+|----------|------|------|-------------|
+| **Google Gemini** | FREE | • No credit card required<br>• Generous free limits<br>• Great for beginners | [Get Key](https://makersuite.google.com/app/apikey) |
+| **OpenAI** | Paid | • GPT-3.5/GPT-4 models<br>• High quality<br>• Industry standard | [Get Key](https://platform.openai.com/api-keys) |
+| **Anthropic Claude** | Paid | • Claude 3 models<br>• Long context<br>• Advanced reasoning | [Get Key](https://console.anthropic.com/) |
 
-### 1. Get Your Gemini API Key (FREE!)
+---
+
+## Option 1: Google Gemini (Recommended - FREE!)
+
+### Step 1: Get Your Gemini API Key
 
 1. Go to [Google AI Studio](https://makersuite.google.com/app/apikey)
 2. Sign in with your Google account
 3. Click "Get API Key" or "Create API Key"
 4. Create a new API key for your project
-5. Copy the API key (save it securely!)
+5. Copy the API key (starts with `AIzaSy...`)
 
-**Note**: Gemini API is completely FREE with generous usage limits, making it perfect for this application.
+### Step 2: Add to Your Project
 
-### 2. Configure Your Application
-
-1. Open the `.env` file in the project root directory
-2. Find the line that says:
+1. Open the `.env` file in the project root
+2. Find this line:
    ```
    VITE_GEMINI_API_KEY=your_gemini_api_key_here
    ```
-3. Replace `your_gemini_api_key_here` with your actual API key:
+3. Replace with your actual key:
    ```
-   VITE_GEMINI_API_KEY=AIzaSyXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+   VITE_GEMINI_API_KEY=AIzaSyXXXXXXXXXXXXXXXXXXXXXXXX
    ```
+4. Save the file and restart your server
 
-### 3. Restart Your Development Server
-
-After adding your API key, the server will restart automatically.
-
-## New Feature: File Upload Support
-
-You can now upload files to ALL tools! Supported file types:
-
-- **PDF** (.pdf) - Perfect for document analysis
-- **Text** (.txt) - Plain text files
-- **Word Documents** (.doc, .docx) - Microsoft Word files
-- **Images** (.jpg, .jpeg, .png, .gif) - For image analysis
-- **CSV** (.csv) - Spreadsheet data
-
-### How to Use File Upload
-
-1. Click any tool to open it
-2. Use the "Upload Files" section at the top
-3. Select one or multiple files
-4. Add optional text instructions
-5. Click "Process" to get AI-powered results
-
-The AI will analyze your uploaded files along with any text you provide!
-
-## What Works With the API
-
-### With Gemini API Key (Required)
-- **AI Tools** (11 tools): Text Summarizer, Chatbot, Code Assistant, Content Generator, Grammar Checker, Translator, Text-to-Speech, Sentiment Analyzer, Resume Optimizer, Screen Analyzer, Image Generator
-- **Email Tools** (8 tools): Email Generator, Email Rewriter, Email Summarizer, Cold Email Generator, Smart Reply, Email Templates, Bulk Email Personalizer, Follow-Up Creator
-- **PDF Tools** (13 tools): All PDF tools with AI-powered assistance for merging, splitting, compressing, converting, and more
-
-### File Upload Examples
-
-**Example 1: Resume Optimizer with PDF**
-- Upload your resume PDF
-- Add instruction: "Optimize for a software engineering role"
-- Get detailed improvement suggestions
-
-**Example 2: Document Summarizer**
-- Upload a long PDF document
-- The tool extracts and summarizes key points
-- Works with multiple documents at once
-
-**Example 3: Image Analysis**
-- Upload screenshots or images
-- Add context: "Analyze the UI design"
-- Get detailed feedback
-
-**Example 4: Email from Document**
-- Upload a PDF report or data file
-- Instruction: "Write an email summarizing this report"
-- Get a professional email draft
-
-## Security Best Practices
-
-### ⚠️ Important Security Notes
-
-1. **Never commit your API key to version control**
-   - The `.env` file is already in `.gitignore`
-   - Always keep your API keys private
-
-2. **Monitor your usage**
-   - Check your Google AI Studio dashboard
-   - Gemini offers generous free tier limits
-
-3. **For production deployment**
-   - Consider using a backend server to proxy API calls
-   - Never expose API keys in client-side code
-   - Implement rate limiting and user authentication
-
-## Pricing Information
-
-**Gemini API is FREE!**
-- Google provides generous free tier limits
-- No credit card required to get started
-- Perfect for personal projects and learning
-- Check current limits at: [Google AI Pricing](https://ai.google.dev/pricing)
-
-## Troubleshooting
-
-### "Gemini API key not configured" Error
-
-**Problem**: You see this error when trying to use any tool.
-
-**Solution**:
-1. Make sure you've added the API key to the `.env` file
-2. Restart your development server
-3. Clear your browser cache and reload the page
-
-### "Failed to process request" Error
-
-**Possible causes and solutions**:
-
-1. **Invalid API key**: Double-check your API key is correct
-2. **Rate limits**: You may be hitting API rate limits - wait a moment and try again
-3. **Network issues**: Check your internet connection
-4. **File too large**: Try smaller files or compress them first
-
-### File Upload Not Working
-
-1. **Supported formats**: Make sure your file is in a supported format (PDF, TXT, DOCX, Images, CSV)
-2. **File size**: Very large files may take longer to process
-3. **Multiple files**: You can upload multiple files at once - they'll all be processed together
-
-### API Key Not Working
-
-1. Verify the API key is valid in your Google AI Studio dashboard
-2. Ensure there are no extra spaces before or after the key in `.env`
-3. Make sure the key starts with `AIzaSy`
-4. Restart your development server after making changes
-
-## File Processing Capabilities
-
-### Text Extraction
-- **TXT files**: Direct text extraction
-- **PDF files**: Shows file information (full text extraction requires additional setup)
-- **DOCX files**: Shows file information (full text extraction requires additional setup)
-
-### Image Processing
-- **Images**: Converted to base64 for AI analysis
-- **Supported formats**: JPG, JPEG, PNG, GIF
-
-### Multiple Files
-- Upload multiple files in one session
-- Each file's content is combined for AI processing
-- Perfect for comparing documents or analyzing batches
-
-## Advanced Usage Tips
-
-1. **Combine files and text**: Upload files AND add text instructions for better results
-2. **Multiple document analysis**: Upload several files to compare or summarize
-3. **Context matters**: Add clear instructions about what you want the AI to do
-4. **Iterate**: Try different prompts with the same files to get different insights
-
-## Alternative: Backend Proxy (Recommended for Production)
-
-For production deployment, it's recommended to:
-
-1. Create a backend server (Node.js, Python, etc.)
-2. Store the API key securely on the server
-3. Have your frontend make requests to your backend
-4. Have your backend make requests to Gemini
-5. Implement authentication and rate limiting
-
-This approach:
-- Keeps your API key secure
-- Allows you to control usage
-- Enables user authentication
-- Prevents API key exposure in browser
-
-## Need Help?
-
-If you encounter issues:
-1. Check the [Google AI Documentation](https://ai.google.dev/docs)
-2. Review the [Gemini API Guide](https://ai.google.dev/tutorials/get_started_web)
-3. Check the project's GitHub issues page
+**That's it!** All tools will now work with Gemini.
 
 ---
 
-**Note**: This application now supports file uploads for all tools, making it incredibly versatile for document processing, analysis, and AI-powered workflows!
+## Option 2: OpenAI (Paid)
+
+### Step 1: Get Your OpenAI API Key
+
+1. Go to [OpenAI Platform](https://platform.openai.com/)
+2. Sign up or log in to your account
+3. Navigate to [API Keys](https://platform.openai.com/api-keys)
+4. Click "Create new secret key"
+5. Name it (e.g., "EternalArchive")
+6. Copy the API key (starts with `sk-...`)
+
+### Step 2: Add to Your Project
+
+1. Open the `.env` file
+2. Find this line:
+   ```
+   VITE_OPENAI_API_KEY=your_openai_api_key_here
+   ```
+3. Replace with your actual key:
+   ```
+   VITE_OPENAI_API_KEY=sk-proj-XXXXXXXXXXXXXXXXXXXXXXXX
+   ```
+4. Save and restart
+
+**Models Used:**
+- GPT-3.5-turbo for all text generation
+- Cost: ~$0.002 per 1K tokens
+
+---
+
+## Option 3: Anthropic Claude (Paid)
+
+### Step 1: Get Your Anthropic API Key
+
+1. Go to [Anthropic Console](https://console.anthropic.com/)
+2. Sign up or log in
+3. Navigate to API Keys section
+4. Create a new API key
+5. Copy the key (starts with `sk-ant-...`)
+
+### Step 2: Add to Your Project
+
+1. Open the `.env` file
+2. Find this line:
+   ```
+   VITE_ANTHROPIC_API_KEY=your_anthropic_api_key_here
+   ```
+3. Replace with your actual key:
+   ```
+   VITE_ANTHROPIC_API_KEY=sk-ant-XXXXXXXXXXXXXXXXXXXXXXXX
+   ```
+4. Save and restart
+
+**Models Used:**
+- Claude 3 Haiku for fast, efficient responses
+- Cost: ~$0.25 per million input tokens
+
+---
+
+## Can I Use Multiple API Keys?
+
+Yes! The app will automatically detect which API keys you've configured and use them in this priority order:
+
+1. **Gemini** (if configured)
+2. **OpenAI** (if Gemini not configured)
+3. **Anthropic** (if neither Gemini nor OpenAI configured)
+
+This means you can:
+- Start with free Gemini
+- Switch to OpenAI when you need it
+- Use Anthropic for specific tasks
+- Keep all keys configured and switch by commenting/uncommenting
+
+---
+
+## File Upload Support
+
+All tools now support file uploads! You can upload:
+
+- **PDF** (.pdf) - Documents, reports, papers
+- **Text** (.txt) - Plain text files
+- **Word** (.doc, .docx) - Microsoft Word documents
+- **Images** (.jpg, .jpeg, .png, .gif) - Screenshots, diagrams
+- **CSV** (.csv) - Data files, spreadsheets
+
+### How to Use
+
+1. Click any tool to open it
+2. Use the "Upload Files" section
+3. Select one or multiple files
+4. Add optional text instructions
+5. Click "Process"
+
+The AI will analyze your files along with your text input!
+
+### Use Case Examples
+
+**Resume Optimizer + PDF:**
+```
+Upload: resume.pdf
+Text: "Optimize for senior software engineer role"
+Result: Detailed improvement suggestions
+```
+
+**Email from Report:**
+```
+Upload: quarterly-report.pdf
+Text: "Write a professional email summarizing this"
+Result: Professional email draft
+```
+
+**Multi-Document Analysis:**
+```
+Upload: doc1.pdf, doc2.pdf, doc3.pdf
+Text: "Compare these documents"
+Result: Comprehensive comparison
+```
+
+---
+
+## Troubleshooting
+
+### "No AI API key configured" Error
+
+**Solution:**
+1. Make sure you've added at least ONE API key to `.env`
+2. Check that the key doesn't still say "your_xxx_api_key_here"
+3. Restart your development server
+4. Clear browser cache
+
+### API Key Not Working
+
+**For Gemini:**
+- Verify key starts with `AIzaSy`
+- Check it's valid at [AI Studio](https://makersuite.google.com/app/apikey)
+
+**For OpenAI:**
+- Verify key starts with `sk-`
+- Check you have credits in your OpenAI account
+
+**For Anthropic:**
+- Verify key starts with `sk-ant-`
+- Check you have credits in your Anthropic account
+
+---
+
+## Switching Between Providers
+
+To switch providers:
+
+1. Open `.env`
+2. Comment out current key (add `#` at start)
+3. Uncomment desired key (remove `#`)
+4. Restart server
+
+Example:
+```bash
+# Using Gemini
+VITE_GEMINI_API_KEY=AIzaSy...
+
+# Switch to OpenAI
+# VITE_GEMINI_API_KEY=AIzaSy...
+VITE_OPENAI_API_KEY=sk-proj-...
+```
+
+---
+
+## Cost Comparison
+
+### For 1,000 Requests (approx):
+
+| Provider | Estimated Cost |
+|----------|----------------|
+| Gemini | **FREE** |
+| OpenAI (GPT-3.5) | ~$0.50 - $2.00 |
+| Anthropic (Claude 3 Haiku) | ~$0.25 - $1.00 |
+
+---
+
+## Quick Start Checklist
+
+- [ ] Choose an AI provider (Gemini recommended)
+- [ ] Get your API key from provider website
+- [ ] Add key to `.env` file
+- [ ] Restart development server
+- [ ] Test with any tool
+- [ ] Try uploading a file!
+
+**Ready to use all 32 AI-powered tools with file upload support!** 🎉
